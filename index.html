@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Cybersecurity Programs</title>
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary-gold: #b58500;
+            --primary-dark: #2c2c2c;
+            --accent-blue: #006989;
+            --bg-body: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --border-color: #e0e0e0;
+            --text-main: #333;
+            --text-muted: #666;
+            --white: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-bottom: 5px solid var(--primary-gold);
+        }
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+
+        /* --- MAIN LAYOUT (Tabs + Content) --- */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 30px;
+            flex: 1;
+        }
+
+        /* SIDEBAR (Vertical Tabs) */
+        .sidebar-tabs {
+            flex: 1;
+            min-width: 300px;
+            background: var(--bg-sidebar);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            overflow: hidden;
+        }
+        
+        .sidebar-title {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .tab-button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .tab-button:last-child { border-bottom: none; }
+        .tab-button:hover { background-color: #f1f1f1; color: var(--primary-gold); }
+        
+        /* Active State for Tabs */
+        .tab-button.active {
+            background-color: var(--white);
+            border-left: 5px solid var(--primary-gold);
+            font-weight: bold;
+            color: var(--primary-dark);
+            padding-left: 15px; /* Adjust for border width */
+        }
+
+        /* MAIN CONTENT AREA */
+        .content-area {
+            flex: 3;
+        }
+
+        /* Content Card */
+        .program-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 30px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .program-card.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Header */
+        .card-meta {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ref-tag {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .program-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .program-lead {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Card Grid (Details vs Sidebar) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-gold);
+            padding-left: 10px;
+        }
+
+        p, ul { margin-bottom: 20px; line-height: 1.6; color: #444; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        /* Schedule Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        th { background-color: #f9f9f9; color: var(--primary-dark); }
+
+        /* Pricing Box (Right side of card) */
+        .pricing-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .price-highlight {
+            color: var(--accent-blue);
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .btn-register {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--primary-gold);
+            color: var(--white);
+            padding: 12px;
+            margin-top: 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-register:hover { background-color: #966e00; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .card-grid { grid-template-columns: 1fr; }
+            .pricing-box { order: -1; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo">Engineering Institute</div>
+        <div style="font-size: 0.9rem;">Oakland University</div>
+    </div>
+</header>
+
+<div class="main-container">
+    
+    <aside class="sidebar-tabs">
+        <div class="sidebar-title">Select a Program ▼</div>
+        <button class="tab-button active" onclick="openProgram(event, 'p1')">Cybersecurity Best Practices (AISEC-1)</button>
+        <button class="tab-button" onclick="openProgram(event, 'p2')">Intro to Autonomous Vehicle Cyber (AISEC-2)</button>
+        <button class="tab-button" onclick="openProgram(event, 'p3')">Security in AI for Automotive (AISEC-3)</button>
+        <button class="tab-button" onclick="openProgram(event, 'p4')">Security in Autonomous Driving (AISEC-4)</button>
+        <button class="tab-button" onclick="openProgram(event, 'p5')">Vehicle User Authentication (AISEC-5)</button>
+    </aside>
+
+    <main class="content-area">
+
+        <article id="p1" class="program-card active">
+            <div class="card-meta">
+                <span class="ref-tag">REF: AISEC-1</span>
+                <h1 class="program-title">Cybersecurity Best Practices for Autonomous Vehicle Data</h1>
+                <div class="program-lead">LEAD: Sinclair Community College</div>
+            </div>
+            
+            <div class="card-grid">
+                <div>
+                    <h3>Program Overview</h3>
+                    <p>This workshop introduces various cybersecurity best practices related to autonomous vehicle generated or related data. The focus of the course is centered on autonomous ground vehicles, with examples and case studies drawn from a range of mobile robotic devices.</p>
+                    
+                    <h3>Objectives</h3>
+                    <ul>
+                        <li>Identify primary autonomous ground vehicle cybersecurity best practices.</li>
+                        <li>Describe viable autonomous ground vehicle cybersecurity data management approaches.</li>
+                        <li>Explore appropriate actions for protecting data from threats.</li>
+                    </ul>
+
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Format</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>11/24/25</td>
+                                <td>12/21/25</td>
+                                <td>Async Online</td>
+                            </tr>
+                            <tr>
+                                <td>02/02/26</td>
+                                <td>03/01/26</td>
+                                <td>Async Online</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the NCAE-C program, free to you.</span>
+                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="p2" class="program-card">
+            <div class="card-meta">
+                <span class="ref-tag">REF: AISEC-2</span>
+                <h1 class="program-title">Introduction to Autonomous Ground Vehicle Cybersecurity</h1>
+                <div class="program-lead">LEAD: Sinclair Community College</div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Program Overview</h3>
+                    <p>This module explores autonomous vehicle cybersecurity considerations including threats, mitigations, best practices, tools, and resources. Participants should expect to commit 32 hours through an asynchronous online expert facilitated offering.</p>
+                    <h3>Objectives</h3>
+                    <ul>
+                        <li>Identify tools, resources, and education opportunities.</li>
+                        <li>Explore primary AV cybersecurity threats and mitigations.</li>
+                        <li>Define how exemplar organizations can be leveraged.</li>
+                    </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <tbody>
+                            <tr><td>01/05/26</td><td>03/01/26</td><td>Async Online</td></tr>
+                            <tr><td>03/09/26</td><td>05/03/26</td><td>Async Online</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
+                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <article id="p3" class="program-card">
+            <div class="card-meta">
+                <span class="ref-tag">REF: AISEC-3</span>
+                <h1 class="program-title">Security in AI for Automotive Applications</h1>
+                <div class="program-lead">LEAD: Worcester Polytechnic Institute</div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Program Overview</h3>
+                    <p>This training explores the security challenges and solutions in AI for automotive applications. Participants will learn about common security issues in AI systems for autonomous vehicles, including adversarial attacks and data privacy.</p>
+                    <h3>Objectives</h3>
+                    <ul>
+                        <li>Introduce basics of autonomous vehicles and key components.</li>
+                        <li>Describe common security challenges in AI systems.</li>
+                        <li>Analyze vulnerabilities in AI systems.</li>
+                    </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                         <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                         <tbody>
+                             <tr><td>09/02/25</td><td>09/05/25</td><td>Live Online (5p-9p ET)</td></tr>
+                             <tr><td>10/06/25</td><td>10/09/25</td><td>Live Online (5p-9p ET)</td></tr>
+                         </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
+                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="p4" class="program-card">
+            <div class="card-meta">
+                <span class="ref-tag">REF: AISEC-4</span>
+                <h1 class="program-title">Security in Autonomous Driving and Navigation</h1>
+                <div class="program-lead">LEAD: University of Michigan, Dearborn</div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Program Overview</h3>
+                    <p>As autonomous driving technology advances, ensuring system security is vital. This course provides a comprehensive understanding of the security challenges and solutions associated with autonomous vehicles and their navigation systems.</p>
+                    <h3>Objectives</h3>
+                    <ul>
+                        <li>Describe autonomous driving technology and security challenges.</li>
+                        <li>Identify cybersecurity threats specific to AVs.</li>
+                        <li>Apply security protocols and techniques.</li>
+                    </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <tbody>
+                            <tr><td>10/20/25</td><td>12/12/25</td><td>Fridays (1p-5p ET)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
+                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="p5" class="program-card">
+            <div class="card-meta">
+                <span class="ref-tag">REF: AISEC-5</span>
+                <h1 class="program-title">Vehicle User Authentication</h1>
+                <div class="program-lead">LEAD: Cleveland State University</div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Program Overview</h3>
+                    <p>This course will explore the critical aspects of vehicle user authentication, a rapidly evolving field with significant implications for safety, security, and privacy in modern transportation systems.</p>
+                    <h3>Objectives</h3>
+                    <ul>
+                        <li>Evaluate strengths and weaknesses of different authentication methods.</li>
+                        <li>Analyze security, privacy, and ethical implications.</li>
+                        <li>Identify authentication methods for different applications.</li>
+                    </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <tbody>
+                            <tr><td>09/12/25</td><td>09/13/25</td><td>Fri-Sat (1p-5p ET)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
+                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+</div>
+
+<script>
+    function openProgram(evt, programId) {
+        // 1. Hide all tab content
+        var cards = document.getElementsByClassName("program-card");
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove("active");
+        }
+
+        // 2. Remove "active" class from all tab links
+        var tablinks = document.getElementsByClassName("tab-button");
+        for (var i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+
+        // 3. Show the specific tab content
+        document.getElementById(programId).classList.add("active");
+
+        // 4. Add "active" class to the button that opened the tab
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
