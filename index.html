@@ -43,8 +43,15 @@
             justify-content: space-between;
         }
         .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+        
+        /* LOGO IMAGE STYLING */
+        .header-logo-img {
+            height: 40px; 
+            width: auto;
+            display: block;
+        }
 
-        /* --- MAIN LAYOUT (Tabs + Content) --- */
+        /* --- MAIN LAYOUT --- */
         .main-container {
             display: flex;
             max-width: 1400px;
@@ -54,7 +61,7 @@
             flex: 1;
         }
 
-        /* SIDEBAR (Vertical Tabs) */
+        /* --- SIDEBAR STYLING --- */
         .sidebar-tabs {
             flex: 1;
             min-width: 300px;
@@ -66,20 +73,45 @@
             overflow: hidden;
         }
         
-        .sidebar-title {
+        /* Main Sidebar Section Headers (Clickable) */
+        .sidebar-header {
             background-color: var(--primary-dark);
             color: var(--white);
             padding: 15px 20px;
             font-size: 1.1rem;
             font-weight: 600;
+            cursor: pointer;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .sidebar-header:hover { background-color: #444; }
+        .sidebar-header:last-child { border-bottom: none; }
+
+        /* Accordion Arrow Icon */
+        .arrow { transition: transform 0.3s ease; }
+        .arrow.rotated { transform: rotate(180deg); } /* Rotates when collapsed */
+
+        /* The Program List Container (Collapsible) */
+        #program-list-container {
+            display: block; /* DEFAULT STATE: VISIBLE */
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        /* This class is added via JS to hide it */
+        #program-list-container.collapsed {
+            display: none;
         }
 
+        /* Individual Program Buttons */
         .tab-button {
             display: block;
             width: 100%;
             text-align: left;
-            padding: 15px 20px;
-            background: none;
+            padding: 15px 20px 15px 35px; /* Indented to look like children */
+            background: #f9f9f9;
             border: none;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
@@ -87,26 +119,24 @@
             color: var(--text-main);
             transition: all 0.2s ease;
         }
-
-        .tab-button:last-child { border-bottom: none; }
-        .tab-button:hover { background-color: #f1f1f1; color: var(--primary-gold); }
+        .tab-button:hover { background-color: #fff; color: var(--primary-gold); }
         
-        /* Active State for Tabs */
+        /* Active State for Buttons */
         .tab-button.active {
             background-color: var(--white);
             border-left: 5px solid var(--primary-gold);
+            padding-left: 30px; /* Adjust for border width */
             font-weight: bold;
             color: var(--primary-dark);
-            padding-left: 15px; /* Adjust for border width */
         }
 
-        /* MAIN CONTENT AREA */
+        /* --- MAIN CONTENT AREA --- */
         .content-area {
             flex: 3;
         }
 
-        /* Content Card */
-        .module-card {
+        /* General Card Styling */
+        .content-card {
             background: var(--white);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -115,14 +145,15 @@
             display: none; /* Hidden by default */
             animation: fadeIn 0.3s ease-in-out;
         }
-        .module-card.active { display: block; }
+        /* Active State for Cards */
+        .content-card.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Card Header */
+        /* Card Header Typography */
         .card-meta {
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -137,7 +168,7 @@
             display: block;
             margin-bottom: 5px;
         }
-        .program-title {
+        .page-title {
             font-size: 2rem;
             color: var(--primary-dark);
             margin-bottom: 10px;
@@ -149,13 +180,14 @@
             font-size: 1rem;
         }
 
-        /* Card Grid (Details vs Sidebar) */
+        /* Content Layout */
         .card-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 40px;
         }
 
+        /* Typography & Lists */
         h3 {
             color: var(--primary-dark);
             font-size: 1.2rem;
@@ -164,12 +196,26 @@
             border-left: 4px solid var(--primary-gold);
             padding-left: 10px;
         }
-
-        p, ul { margin-bottom: 20px; line-height: 1.6; color: #444; }
-        ul { padding-left: 20px; }
+        p { margin-bottom: 20px; line-height: 1.6; color: #444; }
+        
+        /* Main Bullets */
+        ul { padding-left: 20px; margin-bottom: 20px; }
         li { margin-bottom: 8px; }
 
-        /* Schedule Table */
+        /* Sub-bullets (Nested Lists) */
+        ul ul {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            margin-left: 20px;
+            list-style-type: circle; /* Hollow circle */
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        /* Bold Utility Class */
+        .text-bold { font-weight: 700; }
+
+        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -183,7 +229,7 @@
         }
         th { background-color: #f9f9f9; color: var(--primary-dark); }
 
-        /* Pricing Box (Right side of card) */
+        /* Pricing Box */
         .pricing-box {
             background-color: #f8f9fa;
             padding: 20px;
@@ -216,10 +262,29 @@
             border-radius: 4px;
             font-weight: bold;
             transition: background 0.2s;
+            cursor: pointer; /* Ensure pointer shows since we might use href="#" */
         }
         .btn-register:hover { background-color: #966e00; }
 
-        /* --- RESPONSIVE --- */
+        /* Contact Form Styles */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn-submit {
+            background-color: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Responsive */
         @media (max-width: 900px) {
             .main-container { flex-direction: column; }
             .card-grid { grid-template-columns: 1fr; }
@@ -231,25 +296,44 @@
 
 <header>
     <div class="header-inner">
-        <div class="logo">School of Engineering and Computer Science</div>
-        <div style="font-size: 0.9rem;">Oakland University</div>
+        <div class="logo">DOE Cybersecurity Center at Oakland University</div>
+        <img src="https://via.placeholder.com/180x50?text=Oakland+University" alt="Oakland University Logo" class="header-logo-img">
     </div>
 </header>
 
 <div class="main-container">
     
     <aside class="sidebar-tabs">
-        <div class="sidebar-title">Select a Module ▼</div>
-        <button class="tab-button active" onclick="openProgram(event, 'p1')">Comprehensive Information Security and Penetration Testing</button>
-        <button class="tab-button" onclick="openProgram(event, 'p2')">AI and Machine Learning for Cybersecurity</button>
-        <button class="tab-button" onclick="openProgram(event, 'p3')">Reverse Engineering and Malware Analysis</button>
-        <!-- <button class="tab-button" onclick="openProgram(event, 'p4')">Security in Autonomous Driving (AISEC-4)</button>
-        <button class="tab-button" onclick="openProgram(event, 'p5')">Vehicle User Authentication (AISEC-5)</button> -->
+        
+        <div class="sidebar-header" onclick="toggleProgramList()">
+            Select a Module
+            <span id="arrow-icon" class="arrow">▼</span>
+        </div>
+        
+        <div id="program-list-container">
+            <button class="tab-button active" onclick="openContent(event, 'p1', true)"><strong>Module-1</strong><br>Comprehensive Information Security and Penetration Testing</button>
+            <button class="tab-button" onclick="openContent(event, 'p2', true)"><strong>Module-2</strong><br>AI and Machine Learning for Cybersecurity</button>
+            <button class="tab-button" onclick="openContent(event, 'p3', true)"><strong>Module-3</strong><br>Reverse Engineering and Malware Analysis</button>
+            <button class="tab-button" onclick="openContent(event, 'p4', true)"><strong>Module-4</strong><br>A</button>
+            <button class="tab-button" onclick="openContent(event, 'p5', true)"><strong>Module-5</strong><br>B</button>
+            <button class="tab-button" onclick="openContent(event, 'p6', true)"><strong>Module-6</strong><br>C</button>
+        </div>
+
+        <div class="sidebar-header" onclick="openContent(event, 'contact-card', false)">
+            Contact
+            <span>›</span>
+        </div>
+
+        <div class="sidebar-header" onclick="openContent(event, 'more-info-card', false)">
+            Acknowledgement
+            <span>›</span>
+        </div>
+
     </aside>
 
     <main class="content-area">
 
-        <article id="p1" class="module-card active">
+        <article id="p1" class="content-card active">
             <div class="card-meta">
                 <span class="ref-tag">Module-1</span>
                 <h1 class="program-title">Comprehensive Information Security and Penetration Testing</h1>
@@ -304,37 +388,46 @@
                             <tr>
                                 <th>Start Date</th>
                                 <th>End Date</th>
-                                <th>Format</th>
+                                <th>Days</th>
+                                <th>Times</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>11/24/25</td>
-                                <td>12/21/25</td>
-                                <td>Async Online</td>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
                             </tr>
                             <tr>
-                                <td>02/02/26</td>
-                                <td>03/01/26</td>
-                                <td>Async Online</td>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <!-- <div>
+                <div>
                     <div class="pricing-box">
                         <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
                         <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
                         <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
-                        <span class="price-highlight">Fully paid by the NCAE-C program, free to you.</span>
-                        <a href="#" class="btn-register">Pre-Register</a>
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact:<br>gqu@oakland.edu</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
                     </div>
-                </div> -->
+                </div>
             </div>
         </article>
 
-        <article id="p2" class="module-card">
+        <article id="p2" class="content-card">
             <div class="card-meta">
                 <span class="ref-tag">Module-2</span>
                 <h1 class="program-title">AI and Machine Learning for Cybersecurity</h1>
@@ -394,26 +487,50 @@
                             </ul>
                     <h3>Schedule</h3>
                     <table>
-                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td>01/05/26</td><td>03/01/26</td><td>Async Online</td></tr>
-                            <tr><td>03/09/26</td><td>05/03/26</td><td>Async Online</td></tr>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <!-- <div>
+                <div>
                     <div class="pricing-box">
                         <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
                         <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
                         <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
-                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
-                        <a href="#" class="btn-register">Pre-Register</a>
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact:<br>gqu@oakland.edu</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
                     </div>
-                </div> -->
+                </div>
             </div>
         </article>
         
-        <article id="p3" class="module-card">
+        <article id="p3" class="content-card">
             <div class="card-meta">
                 <span class="ref-tag">Module-3</span>
                 <h1 class="program-title">Reverse engineering and Malware Analysis</h1>
@@ -448,46 +565,33 @@
 
                     <h3>Schedule</h3>
                     <table>
-                         <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
-                         <tbody>
-                             <tr><td>09/02/25</td><td>09/05/25</td><td>Live Online (5p-9p ET)</td></tr>
-                             <tr><td>10/06/25</td><td>10/09/25</td><td>Live Online (5p-9p ET)</td></tr>
-                         </tbody>
-                    </table>
-                </div>
-                <!-- <div>
-                    <div class="pricing-box">
-                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
-                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
-                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
-                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
-                        <a href="#" class="btn-register">Pre-Register</a>
-                    </div>
-                </div> -->
-            </div>
-        </article>
-
-        <article id="p4" class="module-card">
-            <div class="card-meta">
-                <span class="ref-tag">REF: AISEC-4</span>
-                <h1 class="program-title">Security in Autonomous Driving and Navigation</h1>
-                <div class="program-lead">LEAD: University of Michigan, Dearborn</div>
-            </div>
-            <div class="card-grid">
-                <div>
-                    <h3>Program Overview</h3>
-                    <p>As autonomous driving technology advances, ensuring system security is vital. This course provides a comprehensive understanding of the security challenges and solutions associated with autonomous vehicles and their navigation systems.</p>
-                    <h3>Objectives</h3>
-                    <ul>
-                        <li>Describe autonomous driving technology and security challenges.</li>
-                        <li>Identify cybersecurity threats specific to AVs.</li>
-                        <li>Apply security protocols and techniques.</li>
-                    </ul>
-                    <h3>Schedule</h3>
-                    <table>
-                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td>10/20/25</td><td>12/12/25</td><td>Fridays (1p-5p ET)</td></tr>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -496,34 +600,89 @@
                         <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
                         <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
                         <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
-                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
-                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
                     </div>
                 </div>
-            </div>
         </article>
 
-        <article id="p5" class="module-card">
+        <article id="p4" class="content-card">
             <div class="card-meta">
-                <span class="ref-tag">REF: AISEC-5</span>
-                <h1 class="program-title">Vehicle User Authentication</h1>
-                <div class="program-lead">LEAD: Cleveland State University</div>
+                <span class="ref-tag">Module-4</span>
+                <h1 class="program-title">Security in Cyber Physical Systems (CPS)</h1>
+                <div class="program-lead">Instructor: </div>
             </div>
             <div class="card-grid">
                 <div>
-                    <h3>Program Overview</h3>
-                    <p>This course will explore the critical aspects of vehicle user authentication, a rapidly evolving field with significant implications for safety, security, and privacy in modern transportation systems.</p>
-                    <h3>Objectives</h3>
-                    <ul>
-                        <li>Evaluate strengths and weaknesses of different authentication methods.</li>
-                        <li>Analyze security, privacy, and ethical implications.</li>
-                        <li>Identify authentication methods for different applications.</li>
-                    </ul>
+                    <h3>Module Overview</h3>
+                    <p>This program provides fundamental security primitives specific to cyber-physical systems and to apply them to a broad range of current and future security challenges, as well as introductions on cyber physical security concepts, assessment of security flaws and threats to CPS, AI enabled threat detection and mitigation for CPS, Privacy-preserving secure solutions for CPS (e.g. smart grids), and risk management of CPS. Students will learn the modeling, design and implementation, and analysis of CPS safety-critical infrastructures, including but not limited to power grid, automobile, manufacturing, and their safety/security requirements in real-world settings. Smart grids are utilized as an example of CPS. MATPOWER on Matlab is utilized as a simulation tool. False data injection attacks (FDIAs) are simulated and implemented on IEEE-14 bus systems to simulate attacks on smart grids. Traditional detection methods, such as Bad Data Detector and machine learning-based detectors such as MLP, Decision Tree and Graph neural networks are both introduced and simulated for detecting FDIAs on smart grids.</p>
+                    <p>This course includes hands-on labs focused on cyber-physical system security, including threat detection and AI-based attack detection. Students will simulate false data injection attacks (FDIAs) on smart grids using MATLAB's MATPOWER and explore detection methods, from traditional approaches to machine learning-based techniques.</p>
+                    <h3>Topics</h3>
+                        <p><strong>1. Introduction to Cyber-Physical System (CPS) Security</strong></p>
+                            <ul>
+                                <li>Overview of CPS and their integration in critical infrastructures such as power grids, automobiles, and manufacturing.</li>
+                            </ul>
+                        <p><strong>2. Security Threats and Risk Assessment in CPS</strong></p>
+                            <ul>
+                                <li>Introduction to key security challenges in CPS.</li>
+                                <li>Case studies on real-world CPS vulnerabilities and attack scenarios.</li>
+                            </ul>
+                        <p><strong>3. Case studies on real-world CPS vulnerabilities and attack scenarios.</strong></p>
+                            <ul>
+                                <li>Traditional security detection methods such as Bad Data Detectors (BDD).</li>
+                                <li>Implementation of rule-based security frameworks for anomaly detection.</li>
+                            </ul>
+                        <p><strong>4. AI-Enabled Threat Detection in CPS</strong></p>
+                            <ul>
+                                <li>Introduction to AI-based models for anomaly detection in CPS environments.</li>
+                            </ul>
+                        <p><strong>5. False Data Injection Attacks (FDIAs) simulation on Smart Grids</strong></p>
+                            <ul>
+                                <li>Simulation of FDIAs on the IEEE 14-bus system using MATPOWER in MATLAB.</li>
+                            </ul>
+                        <p><strong>6. Machine Learning-Based Detection of CPS Attacks</strong></p>
+                            <ul>
+                                <li>Training and evaluating machine learning models (MLP, Decision Trees) for attack detection.</li>
+                            </ul>
+                        <p><strong>7. Graph Neural Networks for CPS Security</strong></p>
+                            <ul>
+                                <li>Application of utilizing Graph Neural Networks (GNNs) in on smart grids.</li>
+                            </ul>
+                        <p><strong>8. AI-Enabled Cybersecurity Attacks in CPS</strong></p>
+                            <ul>
+                                <li>Utilization on generative models such as Generative Adversarial Networks (GANs) to build new FDIAs attack.</li>
+                            </ul>    
+
                     <h3>Schedule</h3>
                     <table>
-                        <thead><tr><th>Start</th><th>End</th><th>Format</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td>09/12/25</td><td>09/13/25</td><td>Fri-Sat (1p-5p ET)</td></tr>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -532,10 +691,272 @@
                         <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
                         <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
                         <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
-                        <span class="price-highlight">Fully paid by the NCAE-C program.</span>
-                        <!-- <a href="#" class="btn-register">Pre-Register</a> -->
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact:<br>gqu@oakland.edu</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
                     </div>
                 </div>
+        </article>
+
+        <article id="p5" class="content-card">
+            <div class="card-meta">
+                <span class="ref-tag">Module-5</span>
+                <h1 class="program-title">Industrial Control Security Training Module</h1>
+                <div class="program-lead">Instructor: </div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Module Overview</h3>
+                    <p>This training module is being developed based on Cybersecurity Frameworks provided by government agencies, particularly drawing from the standardization documentation developed by NIST (National Institute of Standards and Technology). The NIST cybersecurity framework, NICE (National Initiative for Cybersecurity Education), which serves as a reference for describing and sharing information about cybersecurity work, is being used as the basis for shaping the training content for workforce upskilling in this module. The development of the training module is structured into five stages: Identify, Protect, Detect, Respond, and Monitor. Training contents for each step have been documented.</p>
+                    <h3>Topics</h3>
+                        <ul>
+                            <li>Introduction to industrial control systems</li>
+                            <li>Threat landscape for industrial control systems</li>
+                            <li>Risk assessment and management</li>
+                            <li>Security standards and regulations</li>
+                            <li>Access control and authentication</li>
+                            <li>Network security for industrial control systems</li>
+                            <li>Security of industrial control systems components</li>
+                            <li>Incident response and recovery</li>
+                            <li>Security awareness and training</li>
+                            <li>Future trends and emerging technologies</li>
+                            <li>Case studies and practical exercises</li>
+                            <li>Final assessment and certification</li>
+                        </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
+                    </div>
+                </div>
+        </article>
+
+        <article id="p6" class="content-card">
+            <div class="card-meta">
+                <span class="ref-tag">Module-6</span>
+                <h1 class="program-title">Digital Twins for Cyber Threats Detection and Prevention</h1>
+                <div class="program-lead">Instructor: </div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Module Overview</h3>
+                    <p>Creating digital twins of intelligent manufacturing systems for cyber threat assessment is a proactive approach to enhancing the security of industrial operations. A digital twin is a virtual replica of a physical system, and in the context of smart manufacturing, it can represent the entire production process or individual components. By creating and maintaining digital twins for cyber threat assessment, you can proactively identify and mitigate vulnerabilities in your smart manufacturing system, enhancing the overall security of your industrial operations. This approach helps reduce the risk of cyberattacks and their potential impact on production, safety, and data integrity. The course is designed to provide students with an introductory understanding of digital twin technology in manufacturing applications. Students will study application models while gaining practical, hands-on experience with digital twin technology.</p>
+                    <h3>Topics</h3>
+                        <ul>
+                            <li>Smart factory and Industry 4.0</li>
+                            <li>ISO standard on safety of machinery (cybersecurity aspects)</li>
+                            <li>Risk assessment and risk reduction</li>
+                            <li>Simulation and digital twin modeling and their building blocks</li>
+                            <li>Cyber threat modeling</li>
+                            <li>Incident response simulation</li>
+                            <li>Data collection and interfaces</li>
+                            <li>Virtual commissioning</li>
+                            <li>Running experiments and analysis</li>
+                            <li>Creating dashboards for data visualization</li>
+                            <li>Translating results to optimize factories</li>
+                            <li>Regulatory compliance and industry standards</li>
+                        </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
+                    </div>
+                </div>
+        </article>
+
+        <article id="p7" class="content-card">
+            <div class="card-meta">
+                <span class="ref-tag">Module-7</span>
+                <h1 class="program-title">Securing Cyber Physical Systems through AI-Enabled Digital Twins</h1>
+                <div class="program-lead">Instructor: </div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>Module Overview</h3>
+                    <p>The training teaches participants how to perform cyberattack prediction modeling in Cyber-Physical Systems (CPS) using digital twins. It will cover replicating physical devices, firmware, software, and their interactions within a digital twin framework. Participants will learn how digital twins can enhance the security of a company’s physical assets and strategies. The module includes hands-on practice with an industry use case, such as automotive or manufacturing. The training will focus on intelligence-driven digital twins that integrate data analytics and threat intelligence to simulate cyber threats to physical systems. Participants will learn methods to protect these systems. Two guided lab sessions are part of the course. Attendees will have VPN access to the lab infrastructure, enabling them to complete three lab assignments at their convenience.</p>
+                    <p>The course teaches participants how digital twins can enhance the security of a company’s physical assets and strategies. The training will focus on intelligence-driven digital twins that integrate data analytics and threat intelligence to simulate cyber threats to physical systems. The module includes hands-on practice with an industry use case, such as automotive or manufacturing.</p>
+                    <h3>Topics</h3>
+                        <ul>
+                            <li>Introduction to Cyber-Physical Systems</li>
+                            <li>Introduction to Digital Twins in CPS</li>
+                            <li>AI-Enabled Digital Twins for CPS</li>
+                            <li>Threat Detection and Mitigation using Digital Twins</li>
+                            <li>Digital Twin Cybersecurity Framework</li>
+                            <li>Hands-on Lab: Building and Securing a CPS Digital Twin</li>
+                            <li>Regulatory Framework and Compliance</li>
+                            <li>Future Trends in CPS Security through Digital Twins</li>
+                        </ul>
+                    <h3>Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days</th>
+                                <th>Times</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12/15/25</td>
+                                <td>1/5/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>1/15/26</td>
+                                <td>2/15/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous Online, Anytime</td>
+                            </tr>
+                            <tr>
+                                <td>3/1/26</td>
+                                <td>4/1/26</td>
+                                <td>M-Su</td>
+                                <td>Synchronous/Asynchronous Online, Anytime</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <div class="price-item"><span>Fast Track:</span> <strong>$595</strong></div>
+                        <div class="price-item"><span>Workshop:</span> <strong>$1149</strong></div>
+                        <div class="price-item"><span>Module:</span> <strong>$2495</strong></div>
+                        <span class="price-highlight">Fully paid by the DE-CR0000023 program, free to you.</span>
+                        <a href="#" onclick="openContent(event, 'contact-card', false)" class="btn-register">Contact:<br>gqu@oakland.edu</a>
+                        <!-- <p style="margin-top:15px; font-size:0.9rem;"><strong>gqu@oakland.edu</strong></p> -->
+                    </div>
+                </div>
+        </article>
+
+        <article id="contact-card" class="content-card">
+            <div class="card-meta">
+                <h1 class="page-title">Contact Us</h1>
+                <div class="program-lead">Get in touch with the Engineering Institute</div>
+            </div>
+            <div class="card-grid">
+                <div>
+                    <h3>We'd love to hear from you</h3>
+                    <p>If you have questions about the programs, registration, or funding, please reach out.</p>
+                    
+                    <form>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea rows="5" placeholder="How can we help?"></textarea>
+                        </div>
+                        <button type="button" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+                <div>
+                    <div class="pricing-box">
+                        <h3>Address</h3>
+                        <p>318 Meadow Brook Rd<br>Rochester, MI 48309</p>
+                        <h3>Email</h3>
+                        <p><a href="mailto:ei@oakland.edu">ei@oakland.edu</a></p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="more-info-card" class="content-card">
+            <div class="card-meta">
+                <h1 class="page-title">More Information</h1>
+                <div class="program-lead">Additional Resources & Policies</div>
+            </div>
+            <div>
+                <h3>NCAE-C Funding</h3>
+                <p>All programs listed here are fully funded by the National Centers of Academic Excellence in Cybersecurity (NCAE-C). This means there is no cost to eligible participants.</p>
+                
+                <h3>Cancellation Policy</h3>
+                <p>If you need to cancel your registration, please contact us at least 48 hours before the course start date.</p>
+
+                <h3>Technical Requirements</h3>
+                <ul>
+                    <li>Stable Internet connection</li>
+                    <li>Modern web browser (Chrome, Firefox, Edge)</li>
+                    <li>Zoom or Teams for live sessions</li>
+                </ul>
             </div>
         </article>
 
@@ -543,24 +964,61 @@
 </div>
 
 <script>
-    function openProgram(evt, programId) {
-        // 1. Hide all tab content
-        var cards = document.getElementsByClassName("module-card");
+    /* 1. Toggle the "Select a Program" list visibility */
+    function toggleProgramList() {
+        var list = document.getElementById("program-list-container");
+        var arrow = document.getElementById("arrow-icon");
+        
+        if (list.classList.contains("collapsed")) {
+            // Expand
+            list.classList.remove("collapsed");
+            arrow.classList.remove("rotated");
+            arrow.innerHTML = "▼";
+        } else {
+            // Collapse
+            list.classList.add("collapsed");
+            arrow.classList.add("rotated");
+            arrow.innerHTML = "▲";
+        }
+    }
+
+    /* 2. Main Function to Switch Content Cards */
+    function openContent(evt, cardId, isProgramButton) {
+        // Prevent default behavior
+        if(evt) evt.preventDefault();
+
+        // A. Hide all content cards (Programs + Contact + More Info)
+        var cards = document.getElementsByClassName("content-card");
         for (var i = 0; i < cards.length; i++) {
             cards[i].classList.remove("active");
         }
 
-        // 2. Remove "active" class from all tab links
+        // B. Remove "active" highlight from ALL program buttons
         var tablinks = document.getElementsByClassName("tab-button");
         for (var i = 0; i < tablinks.length; i++) {
             tablinks[i].classList.remove("active");
         }
 
-        // 3. Show the specific tab content
-        document.getElementById(programId).classList.add("active");
+        // C. Show the requested card
+        var targetCard = document.getElementById(cardId);
+        if(targetCard) {
+            targetCard.classList.add("active");
+        }
 
-        // 4. Add "active" class to the button that opened the tab
-        evt.currentTarget.classList.add("active");
+        // D. Logic for handling Sidebar highlighting
+        if (isProgramButton) {
+            // If clicking a program, highlight it
+            evt.currentTarget.classList.add("active");
+            
+            // Ensure the list is expanded
+            var list = document.getElementById("program-list-container");
+            var arrow = document.getElementById("arrow-icon");
+            if (list.classList.contains("collapsed")) {
+                list.classList.remove("collapsed");
+                arrow.innerHTML = "▼";
+                arrow.classList.remove("rotated");
+            }
+        }
     }
 </script>
 
